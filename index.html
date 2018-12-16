@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Food</title>
+
+    <link rel="stylesheet" type="text/css" href="main.css">
+
+	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="container">
+
+        <h1>Food Origin Tracking</h1>
+		<br><br><br>
+		
+		<label for="name" class="col-lg-2 control-label">Address</label>
+        <input id="address" type="text">
+		
+		<br><br>
+        <label for="name" class="col-lg-2 control-label">Food ID</label>
+        <input id="name" type="text">
+		<br><br>
+        <label for="name" class="col-lg-2 control-label">Food Origin</label>
+		<label style="color:blue; font-size:200%" for="name" id="detail" class="col-lg-2 control-label"></label>
+		
+		<br><br><br>
+		
+        <button id="button">Get Origin</button>
+
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+    <script>
+		const web3 = new Web3(window.dexon);
+		
+		 //web3.eth.defaultAccount = web3.eth.accounts[0];
+		
+		web3.eth.getAccounts().then(res => console.log(res[0]));
+		
+        var Food = new web3.eth.Contract([
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_verifiedOwner",
+				"type": "address"
+			},
+			{
+				"name": "_foodName",
+				"type": "string"
+			},
+			{
+				"name": "_origin",
+				"type": "string"
+			}
+		],
+		"name": "allotProperty",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "_verifiedOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "_totalNoOfFoodCurrently",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "_nameOfFood",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "_originOfFood",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "_msg",
+				"type": "string"
+			}
+		],
+		"name": "FoodAlloted",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "F",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "foodOwner",
+		"outputs": [
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "origin",
+				"type": "string"
+			},
+			{
+				"name": "FoodCount",
+				"type": "uint256"
+			},
+			{
+				"name": "isSold",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_ownerAddress",
+				"type": "address"
+			}
+		],
+		"name": "getFoodCountOfAnyAddress",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_checkOwnerAddress",
+				"type": "address"
+			},
+			{
+				"name": "_foodName",
+				"type": "string"
+			}
+		],
+		"name": "isOwner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalNoOfFood",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+], '0x6386a4d0800c84d9c6b1d850f02a6bcfaa7ba097');
+        console.log(Food);
+		//CoursetroContract.methods.getInstructor().call();
+       
+        $("#button").click(function() {
+            //$("#detail").text(Food.methods.isOwner($("#name").val(),1));
+			(Food.methods.isOwner($("#address").val(),$("#name").val()).call().then((s) => $("#detail").text(s)));
+			
+        });
+
+	
+	</script>
+
+</body>
+</html>
